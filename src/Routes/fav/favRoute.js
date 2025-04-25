@@ -4,6 +4,6 @@ const favRouter = express.Router();
 favRouter.get('/', getFavProducts);
 favRouter.post('/add', addToFavorites);
 favRouter.post('/add', addToFavorites);
-router.put('/update-quantity', editFavoriteProductQuantity);
-router.delete('/remove/:productId', removeFromFavorites);
+favRouter.put('/update-quantity', editFavoriteProductQuantity);
+favRouter.delete('/remove/:productId', removeFromFavorites);
 export default favRouter;

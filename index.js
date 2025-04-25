@@ -11,7 +11,7 @@ const port = 80;
 dotenv.config();
 app.use(cors());
 app.use(express.json())
- seedData();
+
 app.use("/api/products", productRouter);
 app.use("/api/fav", favRouter);
 app.use("/api/cart", cartRouter);
