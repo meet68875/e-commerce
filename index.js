@@ -10,8 +10,10 @@ import favRouter from './src/Routes/fav/favRoute.js';
 import cartRouter from './src/Routes/cart/CartRoute.js'
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
 const app = express();
-const port = 80;
+const PORT = process.env.PORT || 5000;
+
 dotenv.config();
 app.use(cors());
 app.use(express.json())
@@ -34,4 +36,8 @@ app.use("/api/cart", cartRouter);
 
 dbConnection();
 
-app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`));
+// Important! Should listen on 0.0.0.0
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
