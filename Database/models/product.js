@@ -8,6 +8,11 @@ const productSchema = new mongoose.Schema({
     ref: 'Category', 
     required: true 
   },
+  quantity: { // 👈 Add this
+    type: Number,
+    required: true,
+    default: 0,
+  },
   description: { type: String },
 }, { timestamps: true });
 

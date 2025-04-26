@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 
 export const dbConnection = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/ecommerce', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URL);
     console.log('MongoDB connected...');
   } catch (err) {
     console.error(err.message);

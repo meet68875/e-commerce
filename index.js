@@ -1,3 +1,5 @@
+
+
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors';
@@ -6,12 +8,26 @@ import productRouter from './src/Routes/products/productRoute.js';
 import seedData from './seedData.js';
 import favRouter from './src/Routes/fav/favRoute.js';
 import cartRouter from './src/Routes/cart/CartRoute.js'
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 const app = express();
 const port = 80;
 dotenv.config();
 app.use(cors());
 app.use(express.json())
-
+const swaggerOptions = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'E-commerce API',
+        version: '1.0.0',
+        description: 'Backend API for e-commerce website',
+      },
+    },
+    apis: ['./src/Routes/**/*.js'],
+  };
+  const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/products", productRouter);
 app.use("/api/fav", favRouter);
 app.use("/api/cart", cartRouter);

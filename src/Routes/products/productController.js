@@ -21,36 +21,36 @@ export const getProductsByCategory = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
-    const { id } = req.params;
-    const { name, price, category, description } = req.body;
-  
-    if (!name || !price || !category) {
-      return res.status(400).json({ message: 'Name, price, and category are required.' });
+  const { id } = req.params;
+  const { name, price, category, description, quantity } = req.body;
+
+  if (!name || !price || !category || quantity === undefined) {
+    return res.status(400).json({ message: 'Name, price, category, and quantity are required.' });
+  }
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { name, price, category, description, quantity },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found.' });
     }
-  
-    try {
-      const updatedProduct = await Product.findByIdAndUpdate(
-        id,
-        { name, price, category, description },
-        { new: true, runValidators: true }
-      );
-  
-      if (!updatedProduct) {
-        return res.status(404).json({ message: 'Product not found.' });
-      }
-  
-      res.status(200).json({ message: 'Product updated successfully', data: updatedProduct });
-    } catch (err) {
-      res.status(500).json({ message: 'Server error', error: err });
-    }
-  };
+
+    res.status(200).json({ message: 'Product updated successfully', data: updatedProduct });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err });
+  }
+};
 
 
   export const createProduct = async (req, res) => {
-    const { name, price, category, description } = req.body;
+    const { name, price, category, description, quantity } = req.body;
   
-    if (!name || !price || !category) {
-      return res.status(400).json({ message: "Name, price, and category are required." });
+    if (!name || !price || !category || quantity === undefined) {
+      return res.status(400).json({ message: "Name, price, category, and quantity are required." });
     }
   
     try {
@@ -59,6 +59,7 @@ export const updateProduct = async (req, res) => {
         price,
         category,
         description,
+        quantity,
       });
   
       await newProduct.save();
@@ -69,6 +70,7 @@ export const updateProduct = async (req, res) => {
       res.status(500).json({ message: "Server error", error: err });
     }
   };
+    
 
 
 

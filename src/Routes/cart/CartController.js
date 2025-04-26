@@ -7,21 +7,34 @@ export const addToCart = async (req, res) => {
     if (!productId || !quantity) {
       return res.status(400).json({ message: "Product ID and quantity are required." });
     }
-    let cart = await Cart.findOne(); 
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    if (product.quantity < quantity) {
+      return res.status(400).json({ message: "Not enough stock available." });
+    }
+
+    let cart = await Cart.findOne();
     if (!cart) {
-      cart = new Cart({
-        products: [{ product: productId, quantity }]
-      });
+      cart = new Cart({ products: [{ product: productId, quantity }] });
     } else {
       const existingProductIndex = cart.products.findIndex(
         (item) => item.product.toString() === productId
       );
       if (existingProductIndex > -1) {
-        cart.products[existingProductIndex].quantity += quantity;
+        const newQuantity = cart.products[existingProductIndex].quantity + quantity;
+        if (product.quantity < newQuantity) {
+          return res.status(400).json({ message: "Exceeds available stock." });
+        }
+        cart.products[existingProductIndex].quantity = newQuantity;
       } else {
         cart.products.push({ product: productId, quantity });
       }
     }
+
     await cart.save();
     res.status(201).json({ message: "Product added to cart successfully!" });
   } catch (err) {
@@ -52,6 +65,15 @@ export const updateCartProduct = async (req, res) => {
 
     if (!productId || quantity === undefined) {
       return res.status(400).json({ message: "Product ID and quantity are required." });
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    if (product.quantity < quantity) {
+      return res.status(400).json({ message: "Not enough stock available." });
     }
 
     const cart = await Cart.findOne();
