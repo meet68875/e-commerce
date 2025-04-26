@@ -27,7 +27,7 @@ const swaggerOptions = {
     apis: ['./src/Routes/**/*.js'],
   };
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/products", productRouter);
 app.use("/api/fav", favRouter);
 app.use("/api/cart", cartRouter);
