@@ -33,7 +33,7 @@ const swaggerOptions = {
     res.redirect('/api-docs');
   });
   
-
+seedData();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/products", productRouter);
 app.use("/api/fav", favRouter);
@@ -41,7 +41,6 @@ app.use("/api/cart", cartRouter);
 
 dbConnection();
 
-// Important! Should listen on 0.0.0.0
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });

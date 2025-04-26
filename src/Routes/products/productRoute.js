@@ -61,7 +61,29 @@
  *               items:
  *                 $ref: '#/components/schemas/Product'
  */
-
+/**
+ * @swagger
+ * /api/products/categories:
+ *   get:
+ *     summary: Get all product categories
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: List of all categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: integer
+ *                     description: Auto-generated ID
+ *                   category:
+ *                     type: string
+ *                     description: Name of the category
+ */
 /**
  * @swagger
  * /api/products/category/{category}:
@@ -149,6 +171,7 @@ import express from "express";
 import {
   createProduct,
   deleteProduct,
+  getAllCategories,
   getAllProducts,
   getProductsByCategory,
   updateProduct,
@@ -158,6 +181,7 @@ const productRouter = express.Router();
 
 // Routes
 productRouter.get("/", getAllProducts);
+productRouter.get("/categories", getAllCategories);
 productRouter.get("/category/:category", getProductsByCategory);
 productRouter.post("/create", createProduct);
 productRouter.put("/update/:id", updateProduct);

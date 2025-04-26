@@ -1,3 +1,4 @@
+import Category from "../../../Database/models/category.js";
 import Product from "../../../Database/models/product.js";
 export const getAllProducts = async (req, res) => {
   try {
@@ -7,6 +8,20 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err });
   }
 };
+
+export const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    console.log("categories",categories);
+    
+    res.status(200).json(categories);
+  } catch (err) {
+    console.log(err);
+    
+    res.status(500).json({ message: "Server error", error: err });
+  }
+};
+
 export const getProductsByCategory = async (req, res) => {
   const { category } = req.params;
   try {
