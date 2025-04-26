@@ -30,12 +30,9 @@ const swaggerOptions = {
   };
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
   app.get('/', (req, res) => {
-    res.json({
-      message: 'API is running...',
-      version: '1.0.0',
-      docs: '/api-docs'
-    });
-});
+    res.redirect('/api-docs');
+  });
+  
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/products", productRouter);
