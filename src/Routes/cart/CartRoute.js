@@ -1,4 +1,11 @@
-// CartRoute.js
+// CartRoute.js\
+
+/**
+ * @swagger
+ * tags:
+ *   name: Cart
+ *   description: API endpoints for managing Carts
+ */
 /**
  * @swagger
  * /api/cart:

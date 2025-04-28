@@ -33,7 +33,6 @@ const swaggerOptions = {
     res.redirect('/api-docs');
   });
   
-seedData();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/products", productRouter);
 app.use("/api/fav", favRouter);
