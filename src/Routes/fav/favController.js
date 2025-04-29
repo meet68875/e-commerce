@@ -56,40 +56,11 @@ import Product from "../../../Database/models/product.js";
  */
 export const getFavProducts = async (req, res) => {
   try {
-    const favorites = await Favorites.aggregate([
-      { $unwind: "$products" },
-      {
-        $lookup: {
-          from: "products",
-          localField: "products.product",
-          foreignField: "_id",
-          as: "productDetails",
-        },
-      },
-      { $unwind: "$productDetails" },
-      {
-        $group: {
-          _id: "$_id",
-          products: {
-            $push: {
-              product: "$productDetails",
-              quantity: "$products.quantity",
-            },
-          },
-          createdAt: { $first: "$createdAt" },
-          updatedAt: { $first: "$updatedAt" },
-        },
-      },
-    ]);
-
-    if (!favorites || favorites.length === 0) {
-      return res.status(404).json({ message: "No favorite products found" });
-    }
-
-    res.status(200).json(favorites[0]);
+    const favorites = await Favorites.find().populate('products.product');
+    res.status(200).json(favorites);
   } catch (error) {
-    console.error("Error fetching favorite products:", error);
-    res.status(500).json({ message: "Server error", error });
+    console.error('Error fetching favorites:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -137,7 +108,7 @@ export const addToFavorites = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-
+    
     if (product.quantity < quantity) {
       return res.status(400).json({ message: "Not enough stock available" });
     }
